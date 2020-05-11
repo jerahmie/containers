@@ -1,0 +1,24 @@
+BootStrap: library
+From: ubuntu:16.04
+
+%post
+	apt-get -y update
+	apt-get -y install git wget flex bison gperf python python-pip \
+		   	   python-setuptools python3 python3-pip \
+			   python3-setuptools cmake ninja-build ccache \
+			   libffi-dev libssl-dev libusb-1.0-0 libusb-1.0-0-dev
+        update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+	mkdir -p /tools/esp_build
+	mkdir -p /tools/esp
+	cd /tools/esp_build
+	git clone --recursive https://github.com/espressif/esp-idf.git
+	cd /tools/esp_build/esp-idf
+	export IDF_TOOLS_PATH=/tools/esp
+	/tools/esp_build/esp-idf/install.sh
+
+
+%environment
+	export LC_ALL=C
+	
+%labels
+	Author jerahmie
