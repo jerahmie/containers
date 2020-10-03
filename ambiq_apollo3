@@ -1,0 +1,33 @@
+BootStrap: library
+From: ubuntu:20.04
+
+%post
+	apt-get -y update
+	apt-get install -y software-properties-common
+	add-apt-repository universe
+	apt-get -y update
+	apt-get -y install vim git wget flex bison build-essential \
+		   	   bzip2 \
+		   	   python-setuptools python3 python3-pip \
+			   python3-pyparsing cmake ccache \
+			   libffi-dev libssl-dev libusb-1.0-0 \
+			   libusb-1.0-0-dev emacs-nox
+        update-alternatives --install /usr/bin/python python \
+			   /usr/bin/python3 10
+
+	pip3 install pycryptodome pyserial
+
+	mkdir -p /tools/arm
+	cd /tools/arm
+	wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2?revision=05382cca-1721-44e1-ae19-1e7c3dc96118&la=en&hash=D7C9D18FCA2DD9F894FD9F3C3DC9228498FA281A
+
+	#bzip2 gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
+	#rm gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
+
+%environment
+	LC_ALL=C
+	export LC_ALL
+	#export PATH=/tools/arm/bin:$PATH
+
+%labels
+	Author jerahmie
