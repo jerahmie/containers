@@ -8,15 +8,15 @@ Include: zypper python3 autoconf automake binutils bison \
          cpp flex gcc gcc-fortran gdbm-devel gettext-tools \
          netcdf-devel netcdf-devel-data libnetcdf_c++-devel \ 
          glibc-devel libtool m4 make makeinfo ncurses-devel \
-         patch patterns-base-basesystem clang-format clang-tidy \
-         cppcheck doxygen g++ gawk git graphviz lcov libpqxx-dev \
-         libprotobuf-dev protobuf-compiler tree  wget \
+         patch patterns-base-basesystem llvm-clang clang-tools \
+         cppcheck doxygen gawk git graphviz lcov \
+         tree  wget \
          patterns-devel-base-devel_basis zlib-devel bin86 \
          binutils-devel e2fsprogs-devel fdupes \
          gcc-c++ gcc-info gmp-devel gperf  valgrind \
          libaio-devel libapparmor-devel libdb-4_8-devel libosip2-devel \
          libstdc++-devel openldap2-devel pam-devel patch pkg-config libopenssl-devel curl subversion git \
-         cmake3 vim
+         cmake3 vim tmux
 
 %labels
   Author Jerahmie Radder
@@ -27,8 +27,10 @@ Include: zypper python3 autoconf automake binutils bison \
   export CARGO_HOME=/opt/rust
 
 %post
-  echo "Installing packages"
+  echo "Updating sytem"
   /usr/sbin/update-ca-certificates
+  #mkdir -p /run/tmux
+  echo "Installing conda..."
   echo insecure >> $HOME/.curlrc
   mkdir -p /build/conda && cd /build/conda
   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
@@ -36,16 +38,20 @@ Include: zypper python3 autoconf automake binutils bison \
   chmod 755 Miniconda3-latest-Linux-x86_64.sh
   ./Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda3
   /opt/miniconda3/bin/conda create -n geocat -c conda-forge geocat-viz -y
+  echo "Installing rust"
   mkdir -p /opt/rust
   export RUSTUP_HOME=/opt/rust &&  export CARGO_HOME=/opt/rust && curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path 
+  chmod 777 /opt/rust
 
 %files
   files/bash_bashrc_local /etc/bash.bashrc.local
 
 %runscript
   echo "Output of program:"
-  /opt/miniconda3/bin/conda init bash
-  conda activate geocat-viz
+  #/opt/miniconda3/bin/conda init bash
+  source /etc/bash.bashrc.local
+  conda deactivate
+  conda activate geocat
 
 
 
