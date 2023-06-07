@@ -16,7 +16,7 @@ Include: zypper python3 autoconf automake binutils bison \
          gcc-c++ gcc-info gmp-devel gperf  valgrind \
          libaio-devel libapparmor-devel libdb-4_8-devel libosip2-devel \
          libstdc++-devel openldap2-devel pam-devel patch pkg-config libopenssl-devel curl subversion git \
-         cmake3 vim tmux
+         cmake3 vim tmux neovim
 
 %labels
   Author Jerahmie Radder
